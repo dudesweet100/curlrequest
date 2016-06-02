@@ -123,11 +123,14 @@ exports.request = function (options, callback) {
         delete options.curl_path;
     }
 
-    //Follow location by default
-    if ('max-redirs' in options) {
-        options.location = !!options['max-redirs'];
-    } else {
+    if (!('location' in options)) {
         options.location = true;
+    } else if (!options.location) {
+        delete options.location;
+    }
+
+    //Follow location by default
+    if (!('max-redirs' in options)) {
         options['max-redirs'] = 3;
     }
 
