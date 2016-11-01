@@ -1,8 +1,8 @@
 var util = require('util')
-  , fs = require('fs')
-  , spawn = require('./spawn')
-  , errors = require('./errors')
-  , cwd = process.cwd();
+    , fs = require('fs')
+    , spawn = require('./spawn')
+    , errors = require('./errors')
+    , cwd = process.cwd();
 
 /**
  * Make some curl opts friendlier.
@@ -10,9 +10,9 @@ var util = require('util')
 
 var curl_map = {
     timeout: 'max-time'
-  , redirects: 'max-redirs'
-  , method: 'request'
-  , useragent: 'user-agent'
+    , redirects: 'max-redirs'
+    , method: 'request'
+    , useragent: 'user-agent'
 };
 
 /**
@@ -20,7 +20,7 @@ var curl_map = {
  */
 
 var user_agents = require('./useragents.js')
-  , user_agents_len = user_agents.length;
+    , user_agents_len = user_agents.length;
 
 /**
  * Default request headers.
@@ -28,8 +28,8 @@ var user_agents = require('./useragents.js')
 
 var default_headers = {
     'Accept': '*/*'
-  , 'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3'
-  , 'Accept-Language': 'en-US,en;q=0.8'
+    , 'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3'
+    , 'Accept-Language': 'en-US,en;q=0.8'
 };
 
 /**
@@ -86,22 +86,22 @@ exports.request = function (options, callback) {
     }
 
     var curl
-      , curl_path = 'curl'
-      , args = ['--silent', '--show-error', '--no-buffer']
-      , start = new Date
-      , err
-      , stderr = ''
-      , stdoutlen
-      , stdout = new Buffer(stdoutlen = 0)
-      , encoding
-      , complete
-      , cleanup
-      , postprocess
-      , require_str
-      , require_not_str
-      , scope = {}
-      , cmd = 'curl'
-      , timeout;
+        , curl_path = 'curl'
+        , args = ['--silent', '--show-error', '--no-buffer']
+        , start = new Date
+        , err
+        , stderr = ''
+        , stdoutlen
+        , stdout = new Buffer(stdoutlen = 0)
+        , encoding
+        , complete
+        , cleanup
+        , postprocess
+        , require_str
+        , require_not_str
+        , scope = {}
+        , cmd = 'curl'
+        , timeout;
 
     function finish() {
         if (options.fail && stderr) {
@@ -111,8 +111,8 @@ exports.request = function (options, callback) {
         }
         callback.call(scope, err, stdout, {
             cmd: cmd
-          , args: args
-          , time: (new Date().getTime() - start.getTime())
+            , args: args
+            , time: (new Date().getTime() - start.getTime())
         });
         complete = true;
     }
@@ -224,7 +224,7 @@ exports.request = function (options, callback) {
     //Prepare curl args
     var key, values;
     for (key in options) {
-        if (key === 'pretend') {
+        if (key === 'pretend' || key === 'args') {
             continue;
         }
         values = Array.isArray(options[key]) ? options[key] : [options[key]];
@@ -233,6 +233,11 @@ exports.request = function (options, callback) {
             if (true !== value) {
                 args.push(value);
             }
+        });
+    }
+    if (options.args) {
+        options.args.forEach(function (vl) {
+            args.push(vl);
         });
     }
 
@@ -268,8 +273,8 @@ exports.request = function (options, callback) {
         }
 
         curl.stderr.on('data', function (data) {
-          if (complete) return;
-          stderr += data;
+            if (complete) return;
+            stderr += data;
         });
 
         //Handle curl exit
@@ -360,7 +365,7 @@ exports.concurrent = function (input, concurrency, fn) {
             (function exec() {
                 if (pos >= len) {
                     if (!--remaining) {
-                        fn(null, function () {});
+                        fn(null, function () { });
                     }
                 } else {
                     fn(input[pos++], function () {
